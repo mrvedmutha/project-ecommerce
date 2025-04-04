@@ -1,0 +1,277 @@
+import type * as React from "react";
+import {
+  GalleryVerticalEnd,
+  Minus,
+  Plus,
+  Sun,
+  Moon,
+  User,
+  LogOut,
+} from "lucide-react";
+import { usePathname } from "next/navigation";
+import {
+  Collapsible,
+  CollapsibleContent,
+  CollapsibleTrigger,
+} from "@/components/ui/collapsible";
+import {
+  Sidebar,
+  SidebarContent,
+  SidebarGroup,
+  SidebarHeader,
+  SidebarMenu,
+  SidebarMenuButton,
+  SidebarMenuItem,
+  SidebarMenuSub,
+  SidebarMenuSubButton,
+  SidebarMenuSubItem,
+  SidebarRail,
+  SidebarFooter,
+} from "@/components/ui/sidebar";
+import { useTheme } from "next-themes";
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuTrigger,
+} from "@/components/ui/dropdown-menu";
+import { Button } from "@/components/ui/button";
+
+const data = {
+  navItems: [
+    // Simple item
+    {
+      title: "Dashboard",
+      url: "/admin/dashboard",
+    },
+    // Collapsible item
+    {
+      title: "Products",
+      url: "#",
+      items: [
+        {
+          title: "All Products",
+          url: "/admin/products",
+        },
+        {
+          title: "Categories",
+          url: "/admin/products/categories",
+        },
+        {
+          title: "Brands",
+          url: "/admin/products/brands",
+        },
+      ],
+    },
+    {
+      title: "Orders",
+      url: "/admin/orders",
+    },
+    {
+      title: "Customers",
+      url: "/admin/customers",
+    },
+    {
+      title: "Content",
+      url: "#",
+      items: [
+        {
+          title: "Posts",
+          url: "/admin/content/posts",
+        },
+        {
+          title: "Pages",
+          url: "/admin/content/pages",
+        },
+        {
+          title: "Menus",
+          url: "/admin/content/menus",
+        },
+        {
+          title: "Media",
+          url: "/admin/content/media",
+        },
+      ],
+    },
+    {
+      title: "Marketing",
+      url: "#",
+      items: [
+        {
+          title: "Automation",
+          url: "/admin/marketing/automation",
+        },
+        {
+          title: "Messages",
+          url: "/admin/marketing/messages",
+        },
+        {
+          title: "Coupons",
+          url: "/admin/marketing/coupons",
+        },
+      ],
+    },
+    {
+      title: "Settings",
+      url: "/admin/settings",
+    },
+  ],
+};
+
+interface AppSidebarProps extends React.ComponentProps<typeof Sidebar> {
+  userEmail?: string;
+  onLogout?: () => void;
+}
+
+export function AppSidebar({ userEmail, onLogout, ...props }: AppSidebarProps) {
+  const { setTheme } = useTheme();
+  const pathname = usePathname();
+
+  // Function to check if a URL is currently active
+  const isActive = (url: string): boolean => {
+    if (url === "#") return false;
+    return pathname === url;
+  };
+
+  // Function to check if any child of a collapsible item is active
+  const hasActiveChild = (items: any[]): boolean => {
+    return items?.some((item) => isActive(item.url));
+  };
+
+  return (
+    <Sidebar {...props}>
+      <SidebarHeader>
+        <SidebarMenu>
+          <SidebarMenuItem>
+            <SidebarMenuButton size="lg" asChild>
+              <a href="#">
+                <div className="flex flex-row items-center w-full">
+                  <div className="flex aspect-square size-8 items-center justify-center rounded-lg bg-sidebar-primary text-sidebar-primary-foreground">
+                    <GalleryVerticalEnd className="size-4" />
+                  </div>
+                  <div className="flex flex-col gap-0.5 leading-none ml-3">
+                    <span className="font-semibold">Documentation</span>
+                    <span className="">v1.0.0</span>
+                  </div>
+                  <div className="flex items-center ml-auto">
+                    <DropdownMenu>
+                      <DropdownMenuTrigger asChild>
+                        <Button
+                          variant="outline"
+                          size="icon"
+                          className="w-8 h-8"
+                        >
+                          <Sun className="h-[1.2rem] w-[1.2rem] rotate-0 scale-100 transition-all dark:-rotate-90 dark:scale-0" />
+                          <Moon className="absolute h-[1.2rem] w-[1.2rem] rotate-90 scale-0 transition-all dark:rotate-0 dark:scale-100" />
+                          <span className="sr-only">Toggle theme</span>
+                        </Button>
+                      </DropdownMenuTrigger>
+                      <DropdownMenuContent align="end">
+                        <DropdownMenuItem onClick={() => setTheme("light")}>
+                          Light
+                        </DropdownMenuItem>
+                        <DropdownMenuItem onClick={() => setTheme("dark")}>
+                          Dark
+                        </DropdownMenuItem>
+                        <DropdownMenuItem onClick={() => setTheme("system")}>
+                          System
+                        </DropdownMenuItem>
+                      </DropdownMenuContent>
+                    </DropdownMenu>
+                  </div>
+                </div>
+              </a>
+            </SidebarMenuButton>
+          </SidebarMenuItem>
+        </SidebarMenu>
+      </SidebarHeader>
+      <SidebarContent>
+        <SidebarGroup>
+          <SidebarMenu>
+            {data.navItems.map((item, index) => {
+              // Check if the item has sub-items (collapsible) or not (simple)
+              const isCollapsible = !!item.items && item.items.length > 0;
+              // Check if this item or any of its children is active
+              const activeState = isCollapsible
+                ? hasActiveChild(item.items)
+                : isActive(item.url);
+
+              if (isCollapsible) {
+                // Render collapsible item
+                return (
+                  <Collapsible
+                    key={item.title}
+                    defaultOpen={activeState || index === 2} // Open if active or "Building Your Application"
+                    className="group/collapsible"
+                  >
+                    <SidebarMenuItem>
+                      <CollapsibleTrigger asChild>
+                        <SidebarMenuButton>
+                          {item.title}{" "}
+                          <Plus className="ml-auto group-data-[state=open]/collapsible:hidden" />
+                          <Minus className="ml-auto group-data-[state=closed]/collapsible:hidden" />
+                        </SidebarMenuButton>
+                      </CollapsibleTrigger>
+                      <CollapsibleContent>
+                        <SidebarMenuSub>
+                          {item.items.map((subItem) => (
+                            <SidebarMenuSubItem key={subItem.title}>
+                              <SidebarMenuSubButton
+                                asChild
+                                isActive={isActive(subItem.url)}
+                              >
+                                <a href={subItem.url}>{subItem.title}</a>
+                              </SidebarMenuSubButton>
+                            </SidebarMenuSubItem>
+                          ))}
+                        </SidebarMenuSub>
+                      </CollapsibleContent>
+                    </SidebarMenuItem>
+                  </Collapsible>
+                );
+              } else {
+                // Render simple item
+                return (
+                  <SidebarMenuItem key={item.title}>
+                    <SidebarMenuButton asChild isActive={activeState}>
+                      <a href={item.url}>{item.title}</a>
+                    </SidebarMenuButton>
+                  </SidebarMenuItem>
+                );
+              }
+            })}
+          </SidebarMenu>
+        </SidebarGroup>
+      </SidebarContent>
+
+      {/* User section at the bottom */}
+      <SidebarFooter>
+        <SidebarMenu>
+          <SidebarMenuItem>
+            <div className="flex items-center space-x-3">
+              <div className="flex aspect-square size-12 items-center justify-center rounded-full bg-sidebar-muted">
+                <User className="size-6" />
+              </div>
+              <div className="flex flex-col gap-0.5 leading-none overflow-hidden">
+                <span className="text-sm font-semibold truncate">
+                  {userEmail || "user@example.com"}
+                </span>
+                <span className="text-xs text-muted-foreground">Account</span>
+              </div>
+              <Button
+                variant="ghost"
+                size="icon"
+                className="ml-auto"
+                onClick={onLogout}
+                title="Logout"
+              >
+                <LogOut className="size-4" />
+              </Button>
+            </div>
+          </SidebarMenuItem>
+        </SidebarMenu>
+      </SidebarFooter>
+      <SidebarRail />
+    </Sidebar>
+  );
+}
