@@ -6,7 +6,7 @@ import { Roles } from "@/enum/enumexports";
 import { sign } from "crypto";
 import { NextResponse } from "next/server";
 
-const cxDashboard = () => {
+const CxDashboard = () => {
   const { data: session, status } = useSession();
   if (status) {
     if (status === "loading") {
@@ -34,4 +34,4 @@ const cxDashboard = () => {
   );
 };
 
-export default cxDashboard;
+export default CxDashboard;

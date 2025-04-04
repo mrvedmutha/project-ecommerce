@@ -7,7 +7,7 @@ import { NextResponse } from "next/server";
 import { AppSidebar } from "@/components/common/sidebar/AppSidebar";
 import { SidebarProvider } from "@/components/ui/sidebar";
 
-const adminDashboard = () => {
+const AdminDashboard = () => {
   const { data: session, status } = useSession();
   console.log(status);
   if (status) {
@@ -36,4 +36,4 @@ const adminDashboard = () => {
   );
 };
 
-export default adminDashboard;
+export default AdminDashboard;
