@@ -122,7 +122,6 @@ interface AppSidebarProps extends React.ComponentProps<typeof Sidebar> {
   userEmail?: string;
   onLogout?: () => void;
 }
-
 export function AppSidebar({ userEmail, onLogout, ...props }: AppSidebarProps) {
   const { setTheme } = useTheme();
   const pathname = usePathname();
@@ -132,8 +131,6 @@ export function AppSidebar({ userEmail, onLogout, ...props }: AppSidebarProps) {
     if (url === "#") return false;
     return pathname === url;
   };
-
-  // Function to check if any child of a collapsible item is active
   const hasActiveChild = (items: any[]): boolean => {
     return items?.some((item) => isActive(item.url));
   };

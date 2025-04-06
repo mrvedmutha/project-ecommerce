@@ -1,7 +1,12 @@
 // In _app.jsx or layout.jsx (Next.js 13+)
 "use client";
 import { SessionProvider } from "next-auth/react";
+import SessionWrapper from "@/components/common/SessionWrapper";
 
 export default function RootLayout({ children }: any) {
-  return <SessionProvider>{children}</SessionProvider>;
+  return (
+    <SessionProvider>
+      <SessionWrapper>{children}</SessionWrapper>
+    </SessionProvider>
+  );
 }
