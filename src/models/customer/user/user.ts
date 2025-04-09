@@ -1,7 +1,7 @@
 import mongoose, { Schema, Document } from "mongoose";
 import { ICxUser } from "@/types/customer/user/userInterface";
 import { Roles } from "@/enum/enumexports";
-import addressSchema from "@/Schemas/common/addressSchema";
+import addressSchema from "@/schemas/common/address";
 
 const cxUserSchema = new Schema<ICxUser & Document>({
   username: { type: String, required: true, unique: true },

@@ -36,93 +36,14 @@ import {
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 import { Button } from "@/components/ui/button";
+import { AppSidebarProps } from "@/types/ui/appSidebarProps";
 
-const data = {
-  navItems: [
-    // Simple item
-    {
-      title: "Dashboard",
-      url: "/admin/dashboard",
-    },
-    // Collapsible item
-    {
-      title: "Products",
-      url: "#",
-      items: [
-        {
-          title: "All Products",
-          url: "/admin/products",
-        },
-        {
-          title: "Categories",
-          url: "/admin/products/categories",
-        },
-        {
-          title: "Brands",
-          url: "/admin/products/brands",
-        },
-      ],
-    },
-    {
-      title: "Orders",
-      url: "/admin/orders",
-    },
-    {
-      title: "Customers",
-      url: "/admin/customers",
-    },
-    {
-      title: "Content",
-      url: "#",
-      items: [
-        {
-          title: "Posts",
-          url: "/admin/content/posts",
-        },
-        {
-          title: "Pages",
-          url: "/admin/content/pages",
-        },
-        {
-          title: "Menus",
-          url: "/admin/content/menus",
-        },
-        {
-          title: "Media",
-          url: "/admin/content/media",
-        },
-      ],
-    },
-    {
-      title: "Marketing",
-      url: "#",
-      items: [
-        {
-          title: "Automation",
-          url: "/admin/marketing/automation",
-        },
-        {
-          title: "Messages",
-          url: "/admin/marketing/messages",
-        },
-        {
-          title: "Coupons",
-          url: "/admin/marketing/coupons",
-        },
-      ],
-    },
-    {
-      title: "Settings",
-      url: "/admin/settings",
-    },
-  ],
-};
-
-interface AppSidebarProps extends React.ComponentProps<typeof Sidebar> {
-  userEmail?: string;
-  onLogout?: () => void;
-}
-export function AppSidebar({ userEmail, onLogout, ...props }: AppSidebarProps) {
+const AppSidebar = ({
+  userEmail,
+  onLogout,
+  data,
+  ...props
+}: AppSidebarProps) => {
   const { setTheme } = useTheme();
   const pathname = usePathname();
 
@@ -136,7 +57,7 @@ export function AppSidebar({ userEmail, onLogout, ...props }: AppSidebarProps) {
   };
 
   return (
-    <Sidebar {...props}>
+    <Sidebar collapsible="none" {...props}>
       <SidebarHeader>
         <SidebarMenu>
           <SidebarMenuItem>
@@ -186,19 +107,16 @@ export function AppSidebar({ userEmail, onLogout, ...props }: AppSidebarProps) {
         <SidebarGroup>
           <SidebarMenu>
             {data.navItems.map((item, index) => {
-              // Check if the item has sub-items (collapsible) or not (simple)
               const isCollapsible = !!item.items && item.items.length > 0;
-              // Check if this item or any of its children is active
               const activeState = isCollapsible
-                ? hasActiveChild(item.items)
+                ? item.items !== undefined && hasActiveChild(item.items)
                 : isActive(item.url);
 
               if (isCollapsible) {
-                // Render collapsible item
                 return (
                   <Collapsible
                     key={item.title}
-                    defaultOpen={activeState || index === 2} // Open if active or "Building Your Application"
+                    defaultOpen={activeState || index === 2}
                     className="group/collapsible"
                   >
                     <SidebarMenuItem>
@@ -211,23 +129,23 @@ export function AppSidebar({ userEmail, onLogout, ...props }: AppSidebarProps) {
                       </CollapsibleTrigger>
                       <CollapsibleContent>
                         <SidebarMenuSub>
-                          {item.items.map((subItem) => (
-                            <SidebarMenuSubItem key={subItem.title}>
-                              <SidebarMenuSubButton
-                                asChild
-                                isActive={isActive(subItem.url)}
-                              >
-                                <a href={subItem.url}>{subItem.title}</a>
-                              </SidebarMenuSubButton>
-                            </SidebarMenuSubItem>
-                          ))}
+                          {item.items &&
+                            item.items.map((subItem) => (
+                              <SidebarMenuSubItem key={subItem.title}>
+                                <SidebarMenuSubButton
+                                  asChild
+                                  isActive={isActive(subItem.url)}
+                                >
+                                  <a href={subItem.url}>{subItem.title}</a>
+                                </SidebarMenuSubButton>
+                              </SidebarMenuSubItem>
+                            ))}
                         </SidebarMenuSub>
                       </CollapsibleContent>
                     </SidebarMenuItem>
                   </Collapsible>
                 );
               } else {
-                // Render simple item
                 return (
                   <SidebarMenuItem key={item.title}>
                     <SidebarMenuButton asChild isActive={activeState}>
@@ -240,8 +158,6 @@ export function AppSidebar({ userEmail, onLogout, ...props }: AppSidebarProps) {
           </SidebarMenu>
         </SidebarGroup>
       </SidebarContent>
-
-      {/* User section at the bottom */}
       <SidebarFooter>
         <SidebarMenu>
           <SidebarMenuItem>
@@ -271,4 +187,6 @@ export function AppSidebar({ userEmail, onLogout, ...props }: AppSidebarProps) {
       <SidebarRail />
     </Sidebar>
   );
-}
+};
+
+export default AppSidebar;

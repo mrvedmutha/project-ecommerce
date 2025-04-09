@@ -1,5 +1,5 @@
 import { NextRequest } from "next/server";
-import dbConnect from "@/lib/connectToDatabase";
+import dbConnect from "@/lib/database/connectToDatabase";
 import { superadminService } from "@/service/admin/superadmin/superadminService";
 import { userService } from "@/service/admin/user/userService";
 import { Roles } from "@/enum/enumexports";

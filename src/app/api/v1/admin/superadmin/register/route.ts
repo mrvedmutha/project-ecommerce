@@ -1,5 +1,5 @@
 import { NextRequest } from "next/server";
-import dbConnect from "@/lib/connectToDatabase";
+import dbConnect from "@/lib/database/connectToDatabase";
 import { userService } from "@/service/admin/user/userService";
 import bcrypt from "bcryptjs";
 import { successResponse, errorResponse } from "@/utils/jsonResponse";

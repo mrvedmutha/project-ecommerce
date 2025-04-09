@@ -1,4 +1,4 @@
-import dbConnect from "@/lib/connectToDatabase";
+import dbConnect from "@/lib/database/connectToDatabase";
 import { successResponse, errorResponse } from "@/utils/jsonResponse";
 
 export async function GET() {

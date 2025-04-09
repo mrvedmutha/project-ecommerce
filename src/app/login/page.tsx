@@ -6,7 +6,7 @@ import * as z from "zod";
 import { useForm, SubmitHandler } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import AuthForm from "@/components/common/auth/AuthForm";
-import { loginSchema } from "@/Schemas/zod/auth/loginZodSchema";
+import { loginSchema } from "@/schemas/zod/auth/loginZodSchema";
 import { Roles } from "@/enum/enumexports";
 
 type FormValues = z.infer<typeof loginSchema>;

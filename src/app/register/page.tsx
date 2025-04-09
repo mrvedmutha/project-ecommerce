@@ -5,7 +5,7 @@ import * as z from "zod";
 import { useForm, SubmitHandler } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import AuthForm from "@/components/common/auth/AuthForm";
-import { userRegisterSchema } from "@/Schemas/zod/customer/userRegisterZodSchema";
+import { userRegisterSchema } from "@/schemas/zod/customer/userRegisterZodSchema";
 import { Roles } from "@/enum/enumexports";
 import axios from "axios";
 
