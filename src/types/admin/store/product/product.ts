@@ -29,8 +29,8 @@ export interface IProduct {
     isAvailable: boolean;
     quantity: number;
   };
-  category: IProductCategory;
-  brand: IProductBrand;
+  category?: IProductCategory;
+  brand?: IProductBrand;
   slug: string;
   reviews?: IProductReview[];
   attributes?: IProductAttr[];

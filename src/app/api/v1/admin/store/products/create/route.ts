@@ -5,6 +5,8 @@ import { successResponse, errorResponse } from "@/utils/jsonResponse";
 import { Roles } from "@/enum/enumexports";
 import { parseFormData } from "@/lib/api/common/formDataParsing";
 import { ICloudinaryUploadResult } from "@/types/admin/store/cloudinary/cloudinaryUpload";
+import { productService } from "@/service/admin/store/product/product";
+import dbConnect from "@/lib/database/connectToDatabase";
 
 cloudinary.config({
   cloud_name: process.env.CLOUDINARY_CLOUD_NAME,
@@ -38,7 +40,7 @@ export async function POST(request: NextRequest, response: NextResponse) {
       description: "string",
       shortDescription: "string",
       sku: "string",
-      images: "file[]",
+      images: "string[]",
       buffer: "buffer[]",
       priceDetails: "string",
       taxDetails: "string",
@@ -55,8 +57,10 @@ export async function POST(request: NextRequest, response: NextResponse) {
       tags: "string",
       vendor: "string",
     } as const;
-    const data = await parseFormData(request, config);
+    const data: any = await parseFormData(request, config);
     const buffers = data.buffer;
+    const imgUrls: string[] = [];
+
     for (const [index, buffer] of buffers.entries()) {
       const result = await new Promise<ICloudinaryUploadResult>(
         (resolve, reject) => {
@@ -73,28 +77,19 @@ export async function POST(request: NextRequest, response: NextResponse) {
               }
             }
           );
+
           stream.end(buffer);
         }
       );
-      console.log(result);
+      imgUrls.push(result.secure_url);
     }
 
-    // const cloudinaryUpload = await new Promise<ICloudinaryUploadResult>(
-    //   (resolve, reject) => {
-    //     const stream = cloudinary.uploader.upload_stream(
-    //       { folder: "products" },
-    //       (error, result) => {
-    //         if (error) {
-    //           reject(error);
-    //         } else {
-    //           resolve(result as ICloudinaryUploadResult);
-    //         }
-    //       }
-    //     );
-    //     stream.end(data.buffer);
-    //   }
-    // );
-    return successResponse("Product created successfully", 200);
+    data.images = imgUrls;
+    delete data.buffer;
+    console.log(data); //TODO remove
+    await dbConnect();
+    const product = await productService.createProduct(data);
+    return successResponse("Product created successfully", 200, product);
   } catch (error: any) {
     return errorResponse("Internal Sever Error", 500, error);
   }

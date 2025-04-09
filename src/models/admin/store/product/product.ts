@@ -7,7 +7,7 @@ import { attributeSchema } from "@/schemas/admin/store/product/attribute";
 const productSchema = new Schema<IProduct & Document>(
   {
     title: { type: String, required: true },
-    alias: { type: String, required: true },
+    alias: { type: String },
     description: { type: String, required: true },
     shortDescription: { type: String, required: true },
     sku: { type: String },

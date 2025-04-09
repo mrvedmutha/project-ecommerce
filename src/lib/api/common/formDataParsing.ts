@@ -14,6 +14,8 @@ export async function parseFormData<T extends FormFieldConfig>(
     ? number
     : T[K] extends "buffer[]"
     ? Buffer
+    : T[K] extends "string[]"
+    ? string
     : unknown;
 }> {
   const formData = await req.formData();
@@ -31,11 +33,15 @@ export async function parseFormData<T extends FormFieldConfig>(
     } else if (type === "file[]") {
       parsedData[key] = arrVal as File[];
     } else if (type === "buffer[]") {
-      const file = arrVal as File[];
-      const buffers = await Promise.all(file.map((f) => f.arrayBuffer()));
+      const files = arrVal as File[];
+      const buffers = await Promise.all(
+        files.map(async (file) => Buffer.from(await file.arrayBuffer()))
+      );
       parsedData[key] = buffers;
     } else if (type === "number") {
       parsedData[key] = Number(value);
+    } else if (type === "string[]") {
+      parsedData[key] = arrVal as string[];
     }
   }
 
