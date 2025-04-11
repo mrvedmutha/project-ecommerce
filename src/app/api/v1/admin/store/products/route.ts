@@ -1,10 +1,10 @@
-import { NextRequest, NextResponse } from "next/server";
+import { NextRequest } from "next/server";
 import { productService } from "@/service/admin/store/product/product";
 import dbConnect from "@/lib/database/connectToDatabase";
 import { getServerSession } from "next-auth";
 import { successResponse, errorResponse } from "@/utils/jsonResponse";
 
-export async function GET(request: NextRequest, response: NextResponse) {
+export async function GET(request: NextRequest) {
   const session = await getServerSession();
   if (!session) {
     return errorResponse("Unauthorized, Please Login", 401);

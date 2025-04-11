@@ -1,14 +1,12 @@
 import { successResponse, errorResponse } from "@/utils/jsonResponse";
-import { NextRequest, NextResponse } from "next/server";
+import { NextRequest } from "next/server";
 import dbConnect from "@/lib/database/connectToDatabase";
 import { productService } from "@/service/admin/store/product/product";
-import { Roles } from "@/enum/enumexports";
 import { getServerSession } from "next-auth";
 
 export async function GET(
   request: NextRequest,
-  { params }: { params: { id: string } },
-  response: NextResponse
+  { params }: { params: { id: string } }
 ) {
   const session = await getServerSession();
   if (!session) {

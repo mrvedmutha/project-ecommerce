@@ -1,4 +1,4 @@
-import { NextRequest, NextResponse } from "next/server";
+import { NextRequest } from "next/server";
 import brandService from "@/service/admin/store/product/brand";
 import dbConnect from "@/lib/database/connectToDatabase";
 import { getServerSession } from "next-auth";
@@ -6,8 +6,7 @@ import { successResponse, errorResponse } from "@/utils/jsonResponse";
 
 export async function GET(
   request: NextRequest,
-  { params }: { params: { id: string } },
-  response: NextResponse
+  { params }: { params: { id: string } }
 ) {
   const session = await getServerSession();
   if (!session) {

@@ -1,4 +1,4 @@
-import { NextRequest, NextResponse } from "next/server";
+import { NextRequest } from "next/server";
 import { v2 as cloudinary } from "cloudinary";
 import { getServerSession } from "next-auth";
 import { successResponse, errorResponse } from "@/utils/jsonResponse";
@@ -15,7 +15,7 @@ cloudinary.config({
   secure: true,
 });
 
-export async function POST(request: NextRequest, response: NextResponse) {
+export async function POST(request: NextRequest) {
   const session = await getServerSession();
   if (!session) {
     return errorResponse("Unauthorized, Please Login", 401);
@@ -89,7 +89,7 @@ export async function POST(request: NextRequest, response: NextResponse) {
     console.log(data); //TODO remove
     await dbConnect();
     const product = await productService.createProduct(data);
-    return successResponse("Product created successfully", 200, product, );
+    return successResponse("Product created successfully", 200, product);
   } catch (error: any) {
     return errorResponse("Internal Sever Error", 500, error);
   }
