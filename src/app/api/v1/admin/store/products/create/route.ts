@@ -89,7 +89,7 @@ export async function POST(request: NextRequest, response: NextResponse) {
     console.log(data); //TODO remove
     await dbConnect();
     const product = await productService.createProduct(data);
-    return successResponse("Product created successfully", 200, product);
+    return successResponse("Product created successfully", 200, product, );
   } catch (error: any) {
     return errorResponse("Internal Sever Error", 500, error);
   }
