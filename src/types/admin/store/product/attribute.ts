@@ -1,4 +1,4 @@
-import { IProductPriceDetails } from "@/types/admin/store/products/productPrice";
+import { IProductPriceDetails } from "@/types/admin/store/product/price";
 
 export interface IProductAttrVal {
   value: string;
