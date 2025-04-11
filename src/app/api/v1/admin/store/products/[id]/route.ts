@@ -6,7 +6,7 @@ import { getServerSession } from "next-auth";
 
 export async function GET(
   request: NextRequest,
-  { params }: { params: { id: string } }
+  { params }: { params: Promise<{ id: string }> }
 ) {
   const session = await getServerSession();
   if (!session) {
@@ -17,8 +17,8 @@ export async function GET(
   }
   try {
     await dbConnect();
-    const productId = params.id;
-    const findProduct = await productService.getProductById(productId);
+    const { id } = await params;
+    const findProduct = await productService.getProductById(id);
     if (!findProduct) {
       return errorResponse("Product not found", 404);
     }

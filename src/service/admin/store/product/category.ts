@@ -5,6 +5,9 @@ export const categoryService = {
   getAllCategories() {
     return ProductCategory.find({}).populate("subCategory");
   },
+  getCategoryById(id: string) {
+    return ProductCategory.findById(id).populate("subCategory");
+  },
   createCategory(category: IProductCategory) {
     return ProductCategory.create(category);
   },

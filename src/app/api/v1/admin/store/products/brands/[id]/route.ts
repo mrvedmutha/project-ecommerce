@@ -6,7 +6,7 @@ import { successResponse, errorResponse } from "@/utils/jsonResponse";
 
 export async function GET(
   request: NextRequest,
-  { params }: { params: { id: string } }
+  { params }: { params: Promise<{ id: string }> }
 ) {
   const session = await getServerSession();
   if (!session) {
@@ -17,8 +17,8 @@ export async function GET(
   }
   try {
     await dbConnect();
-    const brandId = params.id;
-    const findBrand = await brandService.getBrandById(brandId);
+    const { id } = await params;
+    const findBrand = await brandService.getBrandById(id);
     if (!findBrand) {
       return errorResponse("Brand not found", 404);
     }
