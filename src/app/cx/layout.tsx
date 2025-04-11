@@ -4,7 +4,7 @@ import { Roles } from "@/enum/enumexports";
 import { signOut, useSession } from "next-auth/react";
 import { NextResponse } from "next/server";
 import { SidebarProvider } from "@/components/ui/sidebar";
-import { AppSidebar } from "@/components/common/sidebar/AppSidebar";
+import AppSidebar from "@/components/common/sidebar/AppSidebar";
 import Loading from "@/components/common/LoadlingPage";
 import ErrorPage from "@/components/common/ErrorPage";
 import { usePathname } from "next/navigation";
