@@ -30,21 +30,17 @@ export default function AdminLayout({ children }: any) {
   }
   return (
     <SidebarProvider>
-      <div className="flex">
-        <div>
-          <AppSidebar
-            data={adminSidebarData}
-            userEmail={session?.user.email}
-            onLogout={() => {
-              signOut();
-              NextResponse.redirect("/login");
-            }}
-          />
-        </div>
-        <div className="max-w-screen-xl p-5 w-full overflow-y-auto">
-          {children}
-        </div>
+      <div className="sticky top-0 h-screen">
+        <AppSidebar
+          data={adminSidebarData}
+          userEmail={session?.user.email}
+          onLogout={() => {
+            signOut();
+            NextResponse.redirect("/login");
+          }}
+        />
       </div>
+      <div className="w-full px-6 py-4 overflow-y-auto">{children}</div>
     </SidebarProvider>
   );
 }

@@ -4,13 +4,18 @@ import productPriceDetailsSchema from "@/schemas/admin/store/product/price";
 import dimensionSchema from "@/schemas/admin/store/product/dimension";
 import productSEODetailSchema from "@/schemas/admin/store/product/seoDetails";
 import { attributeSchema } from "@/schemas/admin/store/product/attribute";
+import { CountryNameEnum } from "@/enum/country/countryEnum";
 const productSchema = new Schema<IProduct & Document>(
   {
     title: { type: String, required: true },
     alias: { type: String },
     description: { type: String, required: true },
     shortDescription: { type: String, required: true },
-    sku: { type: String },
+    sku: {
+      isSku: { type: Boolean },
+      code: { type: String },
+      barcode: { type: String },
+    },
     images: [{ type: String }],
     priceDetails: { type: [productPriceDetailsSchema] },
     taxDetails: {
@@ -35,6 +40,9 @@ const productSchema = new Schema<IProduct & Document>(
     attributes: { type: [attributeSchema] },
     tags: [{ type: String }],
     vendor: { type: Schema.Types.ObjectId, ref: "Vendor" },
+    isActive: { type: Boolean, default: true },
+    origin: { type: String, enum: CountryNameEnum },
+    hsn: { type: String },
   },
   { timestamps: true }
 );

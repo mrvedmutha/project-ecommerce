@@ -7,13 +7,14 @@ import { IProductPriceDetails } from "@/types/admin/store/product/price";
 import { IProductDimension } from "@/types/admin/store/product/dimension";
 import { IProductSEODetails } from "@/types/admin/store/product/seoDetails";
 import { IVendor } from "@/types/admin/store/settings/vendor";
+import { ISku } from "@/types/admin/store/product/sku";
 export interface IProduct {
   _id?: string;
   title: string;
   alias?: string;
   description: string;
   shortDescription: string;
-  sku?: string;
+  sku?: ISku;
   images?: string[];
   priceDetails?: IProductPriceDetails[];
   taxDetails?: {
@@ -36,4 +37,7 @@ export interface IProduct {
   attributes?: IProductAttr[];
   tags?: string[];
   vendor?: IVendor;
+  isActive?: boolean;
+  origin?: string;
+  hsn?: string;
 }

@@ -132,3 +132,15 @@ code {
     @apply bg-background text-foreground;
   }
 }
+
+.tiptap h1 {
+  @apply text-2xl;
+}
+
+.tiptap h2 {
+  @apply text-xl;
+}
+
+.tiptap h3 {
+  @apply text-lg;
+}
