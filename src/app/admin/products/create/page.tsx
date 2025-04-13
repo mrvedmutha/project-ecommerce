@@ -21,7 +21,7 @@ import axios from "axios";
 import * as z from "zod";
 import RichTextEditor from "@/components/common/richTextEditor/richTextEditor";
 
-const createProduct = () => {
+const CreateProduct = () => {
   const [imagePreviews, setImagePreviews] = React.useState<string[]>([]);
   const [isSlugEditing, setIsSlugEditing] = React.useState(false);
   const [hasSlugBeenManuallyEdited, setHasSlugBeenManuallyEdited] =
@@ -276,4 +276,4 @@ const createProduct = () => {
   );
 };
 
-export default createProduct;
+export default CreateProduct;
